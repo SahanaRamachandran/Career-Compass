@@ -44,7 +44,6 @@ const UploadSection = ({ onAnalyze, isLoading, analysisHistory = [] }) => {
 
   return (
     <div className="space-y-6">
-      {/* Analysis History */}
       {analysisHistory.length > 0 && (
         <div className="card max-w-4xl mx-auto">
           <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
@@ -83,7 +82,6 @@ const UploadSection = ({ onAnalyze, isLoading, analysisHistory = [] }) => {
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Let's See How Your Resume Stacks Up</h2>
         
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* File Upload */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Your Resume (PDF - you can upload multiple if you want to compare)
@@ -124,7 +122,6 @@ const UploadSection = ({ onAnalyze, isLoading, analysisHistory = [] }) => {
               <p className="text-xs text-gray-500 mt-1">PDF (MAX. 10MB each)</p>
             </label>
 
-            {/* File List */}
             {files.length > 0 && (
               <div className="mt-4 space-y-2">
                 <h4 className="text-sm font-semibold text-gray-700">Uploaded Files:</h4>
@@ -158,7 +155,6 @@ const UploadSection = ({ onAnalyze, isLoading, analysisHistory = [] }) => {
             )}
           </div>
 
-        {/* Job Description */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             The Job You're After
@@ -176,7 +172,6 @@ const UploadSection = ({ onAnalyze, isLoading, analysisHistory = [] }) => {
           </p>
         </div>
 
-        {/* Submit Button */}
         <div className="flex gap-2">
           <button
             type="submit"
@@ -203,3 +198,4 @@ const UploadSection = ({ onAnalyze, isLoading, analysisHistory = [] }) => {
 };
 
 export default UploadSection;
+

@@ -60,7 +60,7 @@ Keywords Missing: ${results.keywords_missing?.join(', ')}
         </div>
       </div>
 
-      {/* Match Score Progress Circle */}
+      
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="col-span-1 flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg p-6 border border-gray-200">
           <h3 className="text-sm font-semibold text-gray-700 mb-4">Overall Match Score</h3>
@@ -94,7 +94,7 @@ Keywords Missing: ${results.keywords_missing?.join(', ')}
           </div>
         </div>
 
-        {/* Key Metrics */}
+        
         <div className="col-span-2 grid grid-cols-2 gap-4">
           <div className="bg-green-50 border border-green-200 rounded-lg p-4">
             <p className="text-sm text-green-700 font-medium">Strengths</p>
@@ -115,7 +115,7 @@ Keywords Missing: ${results.keywords_missing?.join(', ')}
         </div>
       </div>
 
-      {/* Section Scores Bar Chart */}
+      
       {results.resume_sections_analysis && Object.keys(results.resume_sections_analysis).length > 0 && (
         <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Resume Section Scores</h3>
@@ -142,13 +142,13 @@ Keywords Missing: ${results.keywords_missing?.join(', ')}
         </div>
       )}
 
-      {/* Historical Comparison */}
+      
       {analysisHistory.length > 1 && (
         <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-6 border border-purple-200">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Score Trends</h3>
           <div className="relative h-48">
             <svg className="w-full h-full">
-              {/* Grid lines */}
+              
               {[0, 25, 50, 75, 100].map((y) => (
                 <line
                   key={y}
@@ -161,7 +161,7 @@ Keywords Missing: ${results.keywords_missing?.join(', ')}
                 />
               ))}
               
-              {/* Trend line */}
+              
               {analysisHistory.length > 1 && (
                 <polyline
                   points={analysisHistory.slice(-10).map((record, idx) => {
@@ -177,7 +177,7 @@ Keywords Missing: ${results.keywords_missing?.join(', ')}
                 />
               )}
               
-              {/* Data points */}
+              
               {analysisHistory.slice(-10).map((record, idx) => {
                 const x = (idx / Math.max(analysisHistory.slice(-10).length - 1, 1)) * 100;
                 const y = 192 - (record.match_percentage * 1.92);
@@ -214,3 +214,4 @@ Keywords Missing: ${results.keywords_missing?.join(', ')}
 };
 
 export default Visualizations;
+

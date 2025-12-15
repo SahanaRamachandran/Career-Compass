@@ -57,7 +57,7 @@ const LearningRoadmap = ({ missingSkills, currentLevel, targetRole }) => {
 
       {roadmap && (
         <div className="space-y-6">
-          {/* Days 0-30 */}
+          
           {roadmap.days_0_30 && (
             <div className="border-l-4 border-green-500 pl-4">
               <h3 className="text-lg font-bold text-gray-800 mb-2">🌱 Days 0-30: {roadmap.days_0_30.focus}</h3>
@@ -100,7 +100,7 @@ const LearningRoadmap = ({ missingSkills, currentLevel, targetRole }) => {
             </div>
           )}
 
-          {/* Days 31-60 */}
+          
           {roadmap.days_31_60 && (
             <div className="border-l-4 border-blue-500 pl-4">
               <h3 className="text-lg font-bold text-gray-800 mb-2">🚀 Days 31-60: {roadmap.days_31_60.focus}</h3>
@@ -143,7 +143,7 @@ const LearningRoadmap = ({ missingSkills, currentLevel, targetRole }) => {
             </div>
           )}
 
-          {/* Days 61-90 */}
+          
           {roadmap.days_61_90 && (
             <div className="border-l-4 border-purple-500 pl-4">
               <h3 className="text-lg font-bold text-gray-800 mb-2">🎯 Days 61-90: {roadmap.days_61_90.focus}</h3>
@@ -186,7 +186,7 @@ const LearningRoadmap = ({ missingSkills, currentLevel, targetRole }) => {
             </div>
           )}
 
-          {/* Summary */}
+          
           <div className="bg-gray-50 p-4 rounded-lg">
             <p className="text-sm font-semibold text-gray-700 mb-2">📊 Summary</p>
             <div className="text-sm text-gray-600 space-y-1">
@@ -212,3 +212,4 @@ const LearningRoadmap = ({ missingSkills, currentLevel, targetRole }) => {
 };
 
 export default LearningRoadmap;
+

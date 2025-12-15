@@ -124,3 +124,4 @@ const BulletPointGenerator = () => {
 };
 
 export default BulletPointGenerator;
+

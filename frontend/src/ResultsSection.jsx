@@ -17,7 +17,7 @@ const ResultsSection = ({ results }) => {
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
-      {/* Match Score */}
+      
       <div className="card">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Match Score</h2>
@@ -30,7 +30,7 @@ const ResultsSection = ({ results }) => {
         </div>
       </div>
 
-      {/* Strengths */}
+      
       {results.strengths && results.strengths.length > 0 && (
         <div className="card">
           <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
@@ -50,7 +50,7 @@ const ResultsSection = ({ results }) => {
         </div>
       )}
 
-      {/* Missing Skills */}
+      
       {results.missing_skills && results.missing_skills.length > 0 && (
         <div className="card">
           <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
@@ -72,7 +72,7 @@ const ResultsSection = ({ results }) => {
         </div>
       )}
 
-      {/* Weak Areas */}
+      
       {results.weak_areas && results.weak_areas.length > 0 && (
         <div className="card">
           <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
@@ -92,7 +92,7 @@ const ResultsSection = ({ results }) => {
         </div>
       )}
 
-      {/* ATS Suggestions */}
+      
       {results.ats_suggestions && results.ats_suggestions.length > 0 && (
         <div className="card bg-blue-50 border-blue-200">
           <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
@@ -118,3 +118,4 @@ const ResultsSection = ({ results }) => {
 };
 
 export default ResultsSection;
+

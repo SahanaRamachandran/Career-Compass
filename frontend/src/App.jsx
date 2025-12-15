@@ -29,12 +29,10 @@ function App() {
       const data = await analyzeResume(resumeFile, jobDesc);
       setResults(data);
       
-      // Store resume text for mock interview component
       if (data.resume_text) {
         setResumeText(data.resume_text);
       }
 
-      // Add to history
       const historyRecord = {
         timestamp: new Date().toLocaleString(),
         filename: filename,
@@ -65,7 +63,6 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
@@ -79,7 +76,6 @@ function App() {
         </div>
       </header>
 
-      {/* Tabs */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
         <div className="flex space-x-2 border-b border-gray-200">
           {tabs.map((tab) => (
@@ -99,9 +95,7 @@ function App() {
         </div>
       </div>
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Analysis Tab */}
         {activeTab === 'analyze' && (
           <div className="space-y-8">
             <UploadSection 
@@ -135,18 +129,14 @@ function App() {
           </div>
         )}
 
-        {/* Visualizations Tab */}
         {activeTab === 'visualize' && (
           <Visualizations results={results} analysisHistory={analysisHistory} />
         )}
 
-        {/* Bullet Points Tab */}
         {activeTab === 'bullets' && <BulletPointGenerator />}
 
-        {/* Interview Prep Tab */}
         {activeTab === 'interview' && <InterviewPrep />}
 
-        {/* Learning Roadmap Tab */}
         {activeTab === 'roadmap' && (
           <LearningRoadmap 
             missingSkills={results?.missing_skills || []}
@@ -155,7 +145,6 @@ function App() {
           />
         )}
 
-        {/* Mock Interview Tab */}
         {activeTab === 'mock' && (
           <MockInterview 
             resumeText={resumeText}
@@ -164,7 +153,6 @@ function App() {
         )}
       </main>
 
-      {/* Footer */}
       <footer className="mt-16 bg-gray-50 border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center text-sm text-gray-600">
@@ -177,3 +165,4 @@ function App() {
 }
 
 export default App;
+

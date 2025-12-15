@@ -5,7 +5,7 @@ const AdvancedAnalysis = ({ results }) => {
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
-      {/* Match Explanation */}
+      
       {results.match_explanation && (
         <div className="card bg-blue-50 border-blue-200">
           <h3 className="text-xl font-bold text-gray-800 mb-3 flex items-center">
@@ -18,7 +18,7 @@ const AdvancedAnalysis = ({ results }) => {
         </div>
       )}
 
-      {/* Role Suitability */}
+      
       {results.role_suitability && (
         <div className="card">
           <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
@@ -43,7 +43,7 @@ const AdvancedAnalysis = ({ results }) => {
         </div>
       )}
 
-      {/* Keyword Analysis */}
+      
       {(results.keywords_found?.length > 0 || results.keywords_missing?.length > 0) && (
         <div className="card">
           <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
@@ -92,7 +92,7 @@ const AdvancedAnalysis = ({ results }) => {
         </div>
       )}
 
-      {/* Resume Sections Analysis */}
+      
       {results.resume_sections_analysis && Object.keys(results.resume_sections_analysis).length > 0 && (
         <div className="card">
           <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
@@ -124,7 +124,7 @@ const AdvancedAnalysis = ({ results }) => {
         </div>
       )}
 
-      {/* Bullet Point Analysis */}
+      
       {results.bullet_point_analysis && results.bullet_point_analysis.length > 0 && (
         <div className="card">
           <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
@@ -144,7 +144,7 @@ const AdvancedAnalysis = ({ results }) => {
         </div>
       )}
 
-      {/* Consistency Issues */}
+      
       {results.consistency_issues && results.consistency_issues.length > 0 && (
         <div className="card bg-yellow-50 border-yellow-200">
           <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
@@ -164,7 +164,7 @@ const AdvancedAnalysis = ({ results }) => {
         </div>
       )}
 
-      {/* Career Gaps */}
+      
       {results.career_gaps && results.career_gaps.length > 0 && (
         <div className="card bg-orange-50 border-orange-200">
           <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
@@ -188,3 +188,4 @@ const AdvancedAnalysis = ({ results }) => {
 };
 
 export default AdvancedAnalysis;
+
