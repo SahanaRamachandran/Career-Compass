@@ -266,6 +266,87 @@ async def generate_mock_interview(request: MockInterviewRequest):
         raise HTTPException(status_code=500, detail=f"Mock interview generation failed: {str(e)}")
 
 
+@app.post("/api/voice-interview")
+async def analyze_voice_answer(request: dict):
+    try:
+        from models import VoiceInterviewRequest
+        
+        result = ai_analyzer.analyze_voice_answer(
+            request.get("transcript", ""),
+            request.get("question", ""),
+            request.get("job_description", ""),
+            request.get("resume_text", "")
+        )
+        return result
+    except Exception as e:
+        print(f"Voice interview error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/consistency-check")
+async def check_consistency(request: dict):
+    try:
+        from models import ConsistencyCheckRequest
+        
+        result = ai_analyzer.check_consistency(
+            request.get("resume_text", ""),
+            request.get("interview_answers", [])
+        )
+        return result
+    except Exception as e:
+        print(f"Consistency check error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/recruiter-lens")
+async def recruiter_lens(request: dict):
+    try:
+        from models import RecruiterLensRequest
+        
+        result = ai_analyzer.recruiter_lens_analysis(
+            request.get("resume_text", ""),
+            request.get("job_description", "")
+        )
+        return result
+    except Exception as e:
+        print(f"Recruiter lens error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/career-switch")
+async def career_switch(request: dict):
+    try:
+        from models import CareerSwitchRequest
+        
+        result = ai_analyzer.career_switch_analysis(
+            request.get("resume_text", ""),
+            request.get("target_job", "")
+        )
+        return result
+    except Exception as e:
+        print(f"Career switch error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/whatif-simulation")
+async def whatif_simulation(request: dict):
+    try:
+        from models import WhatIfSimulation
+        
+        result = ai_analyzer.simulate_whatif(
+            request.get("resume_text", ""),
+            request.get("job_description", ""),
+            request.get("add_skills", []),
+            request.get("remove_skills", []),
+            request.get("add_experience", ""),
+            request.get("original_score", 0)
+        )
+        return result
+    except Exception as e:
+        print(f"What-if simulation error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

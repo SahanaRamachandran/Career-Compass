@@ -391,3 +391,272 @@ Format as JSON array:
             "career_gaps": [],
             "summary": f"Your resume has a {match_pct}% match. Focus on incorporating more specific keywords and achievements."
         }
+    
+    def analyze_voice_answer(self, transcript: str, question: str, job_desc: str, resume_text: str) -> Dict:
+        prompt = f"""Analyze this interview answer for quality and alignment.
+
+Question: {question}
+
+Candidate's Answer: {transcript}
+
+Job Description: {job_desc[:800]}
+
+Resume: {resume_text[:800]}
+
+Score the answer on:
+1. Relevance (0-100): How well does it answer the question?
+2. Clarity (0-100): Is it well-structured and clear?
+3. Skill Alignment (0-100): Does it demonstrate required skills?
+
+Return JSON:
+{{
+  "relevance_score": 85,
+  "clarity_score": 90,
+  "skill_alignment_score": 80,
+  "overall_score": 85,
+  "feedback": ["Point 1", "Point 2"],
+  "improved_answer": "A better version using STAR method...",
+  "follow_up_questions": ["Question 1", "Question 2"],
+  "key_points_covered": ["Point 1", "Point 2"],
+  "missing_points": ["What you should have mentioned"]
+}}"""
+
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": "You're an expert interview coach."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.7,
+                max_tokens=600
+            )
+            content = response.choices[0].message.content
+            json_match = re.search(r'\{.*\}', content, re.DOTALL)
+            if json_match:
+                return json.loads(json_match.group())
+            return self._fallback_voice_analysis()
+        except Exception as e:
+            print(f"Voice analysis error: {str(e)}")
+            return self._fallback_voice_analysis()
+    
+    def check_consistency(self, resume_text: str, interview_answers: List[Dict]) -> Dict:
+        answers_text = "\n".join([f"Q: {a['question']}\nA: {a['answer']}" for a in interview_answers[:3]])
+        
+        prompt = f"""Compare resume claims with interview answers for consistency.
+
+Resume: {resume_text[:1000]}
+
+Interview Answers: {answers_text}
+
+Check for contradictions, exaggerations, or weak claims.
+
+Return JSON:
+{{
+  "overall_consistency": 85,
+  "contradictions": [{{"claim": "Resume says X", "answer": "Interview says Y", "severity": "Medium"}}],
+  "weak_claims": [{{"claim": "Led team of 10", "issue": "No supporting evidence in answers"}}],
+  "areas_to_clarify": ["Area 1", "Area 2"],
+  "red_flags": ["Red flag 1"]
+}}"""
+
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": "You're a recruiter checking candidate consistency."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.6,
+                max_tokens=500
+            )
+            content = response.choices[0].message.content
+            json_match = re.search(r'\{.*\}', content, re.DOTALL)
+            if json_match:
+                return json.loads(json_match.group())
+            return self._fallback_consistency()
+        except Exception as e:
+            print(f"Consistency check error: {str(e)}")
+            return self._fallback_consistency()
+    
+    def recruiter_lens_analysis(self, resume_text: str, job_desc: str) -> Dict:
+        prompt = f"""You're a busy recruiter spending 30 seconds on this resume.
+
+Resume: {resume_text[:1200]}
+
+Job: {job_desc[:600]}
+
+What catches your eye immediately? What are red flags?
+
+Return JSON:
+{{
+  "first_impression_score": 75,
+  "attention_grabbers": ["Impressive thing 1", "Impressive thing 2"],
+  "red_flags": ["Red flag 1", "Red flag 2"],
+  "missing_essentials": ["Missing thing 1"],
+  "visual_appeal_score": 80,
+  "time_to_decision": "20 seconds",
+  "likelihood": "Would interview"
+}}"""
+
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": "You're a recruiter making quick decisions."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.7,
+                max_tokens=400
+            )
+            content = response.choices[0].message.content
+            json_match = re.search(r'\{.*\}', content, re.DOTALL)
+            if json_match:
+                return json.loads(json_match.group())
+            return self._fallback_recruiter_lens()
+        except Exception as e:
+            print(f"Recruiter lens error: {str(e)}")
+            return self._fallback_recruiter_lens()
+    
+    def career_switch_analysis(self, resume_text: str, target_job: str) -> Dict:
+        prompt = f"""Analyze career switch feasibility.
+
+Current Resume: {resume_text[:1000]}
+
+Target Job: {target_job}
+
+Assess if this person can transition to the target role.
+
+Return JSON:
+{{
+  "is_feasible": true,
+  "gap_percentage": 35,
+  "alternative_roles": [
+    {{"role": "Role 1", "match_percentage": 85, "reason": "Why", "required_skills": ["Skill 1"]}},
+    {{"role": "Role 2", "match_percentage": 75, "reason": "Why", "required_skills": ["Skill 1"]}}
+  ],
+  "transition_difficulty": "Moderate",
+  "recommended_path": ["Step 1", "Step 2", "Step 3"],
+  "timeline": "6-12 months"
+}}"""
+
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": "You're a career counselor."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.7,
+                max_tokens=600
+            )
+            content = response.choices[0].message.content
+            json_match = re.search(r'\{.*\}', content, re.DOTALL)
+            if json_match:
+                return json.loads(json_match.group())
+            return self._fallback_career_switch()
+        except Exception as e:
+            print(f"Career switch error: {str(e)}")
+            return self._fallback_career_switch()
+    
+    def simulate_whatif(self, resume_text: str, job_desc: str, add_skills: List[str], 
+                        remove_skills: List[str], add_exp: str, original_score: int) -> Dict:
+        modifications = []
+        if add_skills:
+            modifications.append(f"Adding skills: {', '.join(add_skills)}")
+        if remove_skills:
+            modifications.append(f"Removing skills: {', '.join(remove_skills)}")
+        if add_exp:
+            modifications.append(f"Adding experience: {add_exp[:200]}")
+        
+        prompt = f"""Predict resume match score change.
+
+Original Resume Score: {original_score}%
+
+Modifications: {' | '.join(modifications)}
+
+Job Description: {job_desc[:600]}
+
+Return JSON:
+{{
+  "new_score": 78,
+  "score_change": 8,
+  "impact_analysis": "Adding Python increases relevance...",
+  "recommendations": ["Rec 1", "Rec 2"]
+}}"""
+
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": "You're analyzing resume modifications."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.6,
+                max_tokens=400
+            )
+            content = response.choices[0].message.content
+            json_match = re.search(r'\{.*\}', content, re.DOTALL)
+            if json_match:
+                result = json.loads(json_match.group())
+                result["original_score"] = original_score
+                return result
+            return self._fallback_whatif(original_score)
+        except Exception as e:
+            print(f"What-if simulation error: {str(e)}")
+            return self._fallback_whatif(original_score)
+    
+    def _fallback_voice_analysis(self) -> Dict:
+        return {
+            "relevance_score": 70,
+            "clarity_score": 75,
+            "skill_alignment_score": 70,
+            "overall_score": 72,
+            "feedback": ["Structure your answer using STAR method", "Add more specific examples"],
+            "improved_answer": "Use the STAR method: Situation, Task, Action, Result. Be specific with metrics.",
+            "follow_up_questions": ["Can you elaborate on that project?", "What was your specific role?"],
+            "key_points_covered": ["Mentioned relevant experience"],
+            "missing_points": ["Quantifiable results", "Team collaboration details"]
+        }
+    
+    def _fallback_consistency(self) -> Dict:
+        return {
+            "overall_consistency": 80,
+            "contradictions": [],
+            "weak_claims": [],
+            "areas_to_clarify": ["Provide more details about key projects"],
+            "red_flags": []
+        }
+    
+    def _fallback_recruiter_lens(self) -> Dict:
+        return {
+            "first_impression_score": 70,
+            "attention_grabbers": ["Clear job titles", "Relevant experience"],
+            "red_flags": ["Needs more quantifiable achievements"],
+            "missing_essentials": ["Professional summary", "Skills section"],
+            "visual_appeal_score": 75,
+            "time_to_decision": "25 seconds",
+            "likelihood": "Maybe interview"
+        }
+    
+    def _fallback_career_switch(self) -> Dict:
+        return {
+            "is_feasible": True,
+            "gap_percentage": 40,
+            "alternative_roles": [
+                {"role": "Related Role 1", "match_percentage": 75, "reason": "Transferable skills", "required_skills": ["Skill 1", "Skill 2"]},
+                {"role": "Related Role 2", "match_percentage": 70, "reason": "Similar domain", "required_skills": ["Skill 1"]}
+            ],
+            "transition_difficulty": "Moderate",
+            "recommended_path": ["Build missing skills", "Get certifications", "Work on portfolio projects"],
+            "timeline": "6-12 months"
+        }
+    
+    def _fallback_whatif(self, original_score: int) -> Dict:
+        return {
+            "original_score": original_score,
+            "new_score": original_score + 5,
+            "score_change": 5,
+            "impact_analysis": "Modifications would slightly improve your match score.",
+            "recommendations": ["Add more relevant keywords", "Quantify achievements"]
+        }

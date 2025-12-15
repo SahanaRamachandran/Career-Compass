@@ -7,6 +7,11 @@ import MockInterview from './MockInterview';
 import BulletPointGenerator from './BulletPointGenerator';
 import InterviewPrep from './InterviewPrep';
 import Visualizations from './Visualizations';
+import VoiceInterview from './VoiceInterview';
+import RecruiterLens from './RecruiterLens';
+import CareerSwitch from './CareerSwitch';
+import WhatIfSimulator from './WhatIfSimulator';
+import ConsistencyCheck from './ConsistencyCheck';
 import { analyzeResume } from './api';
 import './index.css';
 
@@ -54,11 +59,16 @@ function App() {
 
   const tabs = [
     { id: 'analyze', label: 'Resume Analysis', icon: '📊' },
+    { id: 'voice', label: 'Voice Interview', icon: '🎤' },
+    { id: 'consistency', label: 'Consistency Check', icon: '🔍' },
+    { id: 'recruiter', label: 'Recruiter Lens', icon: '👁️' },
+    { id: 'switch', label: 'Career Switch', icon: '🔄' },
+    { id: 'whatif', label: 'What-If Simulator', icon: '🔮' },
     { id: 'visualize', label: 'Visualizations', icon: '📈' },
     { id: 'bullets', label: 'Bullet Points', icon: '✍️' },
     { id: 'interview', label: 'Interview Prep', icon: '💼' },
     { id: 'roadmap', label: 'Learning Path', icon: '🎯' },
-    { id: 'mock', label: 'Mock Interview', icon: '🎤' },
+    { id: 'mock', label: 'Mock Interview', icon: '🎭' },
   ];
 
   return (
@@ -127,6 +137,36 @@ function App() {
               </>
             )}
           </div>
+        )}
+
+        {activeTab === 'voice' && (
+          <VoiceInterview 
+            resumeText={resumeText}
+            jobDescription={jobDescription}
+          />
+        )}
+
+        {activeTab === 'consistency' && (
+          <ConsistencyCheck resumeText={resumeText} />
+        )}
+
+        {activeTab === 'recruiter' && (
+          <RecruiterLens 
+            resumeText={resumeText}
+            jobDescription={jobDescription}
+          />
+        )}
+
+        {activeTab === 'switch' && (
+          <CareerSwitch resumeText={resumeText} />
+        )}
+
+        {activeTab === 'whatif' && (
+          <WhatIfSimulator 
+            resumeText={resumeText}
+            jobDescription={jobDescription}
+            originalScore={results?.match_percentage || 0}
+          />
         )}
 
         {activeTab === 'visualize' && (
