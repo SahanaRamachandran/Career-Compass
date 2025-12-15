@@ -9,28 +9,17 @@ load_dotenv()
 
 
 class AIAnalyzer:
-    """Use OpenAI GPT to analyze resume-job fit and provide insights."""
     
     def __init__(self):
         api_key = os.getenv("OPENAI_API_KEY")
         if not api_key:
-            raise ValueError("OPENAI_API_KEY not found in environment variables")
+            raise ValueError("OpenAI API key not found - please add it to your .env file")
         self.client = OpenAI(api_key=api_key)
         self.model = "gpt-3.5-turbo"
     
     def analyze_match(self, resume_text: str, job_description: str, similarity_score: float) -> Dict:
-        """
-        Analyze resume-job match and provide detailed insights with advanced features.
         
-        Args:
-            resume_text: Resume content
-            job_description: Job description content
-            similarity_score: Cosine similarity score
-            
-        Returns:
-            Dictionary with comprehensive analysis results
-        """
-        prompt = f"""You are an expert career advisor and ATS specialist analyzing resume-job fit.
+        prompt = f"""You're an experienced career counselor analyzing resume-job fit.
 
 Resume:
 {resume_text[:3000]}
@@ -38,9 +27,9 @@ Resume:
 Job Description:
 {job_description[:2000]}
 
-Semantic similarity score: {similarity_score:.2f} (0-1 scale)
+Initial match score from our algorithm: {similarity_score:.2f} (on a 0-1 scale)
 
-Provide a comprehensive analysis in JSON format with these fields:
+Give me a detailed breakdown in JSON format. Here's exactly what I need:
 {{
   "match_percentage": <0-100 integer>,
   "match_explanation": "2-3 sentences explaining why this score was given",
@@ -63,13 +52,13 @@ Provide a comprehensive analysis in JSON format with these fields:
   "summary": "Brief overall assessment"
 }}
 
-Be specific and actionable."""
+Be honest and specific - no generic advice!"""
 
         try:
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
-                    {"role": "system", "content": "You are an expert career advisor and ATS specialist."},
+                    {"role": "system", "content": "You're a career advisor with hiring experience. Be honest and helpful."},
                     {"role": "user", "content": prompt}
                 ],
                 temperature=0.7,
@@ -77,31 +66,18 @@ Be specific and actionable."""
             )
             
             content = response.choices[0].message.content
-            # Extract JSON from response
             json_match = re.search(r'\{.*\}', content, re.DOTALL)
             if json_match:
-                result = json.loads(json_match.group())
-                return result
-            else:
-                # Fallback
-                return self._create_fallback_analysis(similarity_score)
+                return json.loads(json_match.group())
+            return self._create_fallback_analysis(similarity_score)
                 
         except Exception as e:
-            print(f"AI Analysis error: {str(e)}")
+            print(f"Analysis error: {str(e)}")
             return self._create_fallback_analysis(similarity_score)
     
     def generate_bullet_points(self, experience: str, job_title: str) -> List[str]:
-        """
-        Generate improved resume bullet points based on experience.
         
-        Args:
-            experience: User's experience description
-            job_title: Target job title
-            
-        Returns:
-            List of improved bullet points
-        """
-        prompt = f"""Generate 8-10 diverse, powerful resume bullet points for this experience:
+        prompt = f"""Transform this work experience into professional resume bullet points.
 
 Experience: {experience[:800]}
 Target Role: {job_title}
@@ -152,7 +128,6 @@ Return ONLY the bullet points, one per line, without numbers, dashes, or bullet 
             return self._create_fallback_bullets()
     
     def _create_fallback_bullets(self) -> List[str]:
-        """Create comprehensive fallback bullets when AI call fails."""
         return [
             "Spearheaded cross-functional initiatives that improved team productivity by 25% and reduced delivery time",
             "Architected and implemented scalable solutions serving 100K+ users with 99.9% uptime",
@@ -165,15 +140,6 @@ Return ONLY the bullet points, one per line, without numbers, dashes, or bullet 
         ]
     
     def generate_interview_questions(self, job_description: str) -> List[str]:
-        """
-        Generate role-specific interview questions.
-        
-        Args:
-            job_description: Job description content
-            
-        Returns:
-            List of interview questions
-        """
         prompt = f"""Based on this job description, generate 5 relevant interview questions a candidate should prepare for:
 
 Job Description:
@@ -222,17 +188,6 @@ Return only the questions, one per line, numbered."""
             ]
     
     def generate_learning_roadmap(self, missing_skills: List[str], current_level: str, target_role: str) -> Dict:
-        """
-        Generate a personalized 30-60-90 day learning roadmap.
-        
-        Args:
-            missing_skills: List of skills to acquire
-            current_level: Current experience level
-            target_role: Target job role
-            
-        Returns:
-            Dictionary with structured learning plan
-        """
         skills_str = ", ".join(missing_skills[:5])
         prompt = f"""Create a focused 30-60-90 day learning roadmap for someone at {current_level} level targeting a {target_role} role.
 
@@ -287,16 +242,6 @@ Provide a practical plan in JSON format:
             return self._create_fallback_roadmap()
     
     def generate_mock_interview_questions(self, resume_text: str, job_description: str) -> List[Dict]:
-        """
-        Generate resume-based mock interview questions.
-        
-        Args:
-            resume_text: Resume content
-            job_description: Job description
-            
-        Returns:
-            List of questions with follow-ups
-        """
         prompt = f"""Based on this resume and job description, generate 6 targeted interview questions.
 
 Resume highlights:
@@ -357,7 +302,6 @@ Format as JSON array:
             return self._create_fallback_questions()
     
     def _create_fallback_roadmap(self) -> Dict:
-        """Create a basic roadmap when AI call fails."""
         return {
             "days_0_30": {
                 "focus": "Foundation building",
@@ -385,7 +329,6 @@ Format as JSON array:
         }
     
     def _create_fallback_questions(self) -> List[Dict]:
-        """Create basic mock questions when AI call fails."""
         return [
             {
                 "question": "Tell me about a challenging project you worked on and how you overcame obstacles.",
@@ -417,7 +360,6 @@ Format as JSON array:
         ]
     
     def _create_fallback_analysis(self, similarity_score: float) -> Dict:
-        """Create a basic analysis when AI call fails."""
         match_pct = int(similarity_score * 100)
         
         return {

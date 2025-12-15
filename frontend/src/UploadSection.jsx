@@ -80,13 +80,13 @@ const UploadSection = ({ onAnalyze, isLoading, analysisHistory = [] }) => {
       )}
 
       <div className="card max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Upload Resume & Job Description</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Let's See How Your Resume Stacks Up</h2>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* File Upload */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Resume(s) (PDF) - Multiple files supported
+              Your Resume (PDF - you can upload multiple if you want to compare)
             </label>
             <input
               type="file"
@@ -161,18 +161,18 @@ const UploadSection = ({ onAnalyze, isLoading, analysisHistory = [] }) => {
         {/* Job Description */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Job Description
+            The Job You're After
           </label>
           <textarea
             className="input-field resize-none text-gray-900"
             rows="8"
-            placeholder="Paste the full job description here..."
+            placeholder="Copy the full job posting here - responsibilities, requirements, everything!"
             value={jobDescription}
             onChange={(e) => setJobDescription(e.target.value)}
             disabled={isLoading}
           />
           <p className="mt-1 text-xs text-gray-500">
-            {jobDescription.length} characters (minimum 50 required)
+            {jobDescription.length} characters (needs at least 50 - the more you add, the better the analysis)
           </p>
         </div>
 

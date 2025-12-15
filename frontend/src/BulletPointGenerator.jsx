@@ -11,12 +11,12 @@ const BulletPointGenerator = () => {
     e.preventDefault();
     
     if (!experience.trim() || experience.length < 20) {
-      alert('Please describe your experience (at least 20 characters)');
+      alert('Tell us a bit more about what you did - at least a sentence or two!');
       return;
     }
     
     if (!jobTitle.trim()) {
-      alert('Please enter the target job title');
+      alert('What job are you applying for? We need that to make the bullets relevant.');
       return;
     }
 
@@ -40,17 +40,17 @@ const BulletPointGenerator = () => {
 
   return (
     <div className="card max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Resume Bullet Point Generator</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">Turn Your Work Into Resume Gold</h2>
       
       <form onSubmit={handleGenerate} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Your Experience
+            What Did You Actually Do?
           </label>
           <textarea
             className="input-field resize-none text-gray-900"
             rows="4"
-            placeholder="Describe what you did in this role..."
+            placeholder="Just describe your work in your own words - don't worry about making it sound fancy yet. Example: 'I managed a team that built a new feature' or 'I helped customers solve technical problems'"
             value={experience}
             onChange={(e) => setExperience(e.target.value)}
             disabled={isLoading}
@@ -59,12 +59,12 @@ const BulletPointGenerator = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Target Job Title
+            What Job Are You Going For?
           </label>
           <input
             type="text"
             className="input-field text-gray-900"
-            placeholder="e.g., Software Engineer, Data Analyst"
+            placeholder="Software Engineer, Marketing Manager, Data Analyst..."
             value={jobTitle}
             onChange={(e) => setJobTitle(e.target.value)}
             disabled={isLoading}

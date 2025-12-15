@@ -73,7 +73,7 @@ function App() {
               <h1 className="text-3xl font-bold text-gray-900">
                 <span className="text-blue-600">Career</span> Compass
               </h1>
-              <p className="text-sm text-gray-600 mt-1">Smart Resume-to-Job Matching Platform</p>
+              <p className="text-sm text-gray-600 mt-1">Your Personal Job Search Assistant</p>
             </div>
           </div>
         </div>
@@ -168,7 +168,7 @@ function App() {
       <footer className="mt-16 bg-gray-50 border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center text-sm text-gray-600">
-            <p className="mt-2">Helping students and professionals find their perfect job match</p>
+            <p className="mt-2">Made with ❤️ to help you land that dream job</p>
           </div>
         </div>
       </footer>

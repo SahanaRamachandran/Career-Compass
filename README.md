@@ -1,131 +1,121 @@
 # Career Compass 🧭
 
-A smart resume-to-job matching platform that helps students and professionals analyze their resumes, get ATS optimization tips, and prepare for interviews using AI.
+Hey there! Welcome to Career Compass - your personal career assistant that makes job hunting less stressful. Whether you're a student applying for your first job or a professional switching careers, this tool has your back.
 
-## Features ✨
+## What Can It Do? ✨
 
-- **Resume Analysis**: Upload your resume (PDF) and job description to get a detailed match score (0-100%)
-- **Semantic Matching**: Uses OpenAI embeddings and FAISS for accurate similarity calculation
-- **Missing Skills Detection**: Identifies skills you need to add
-- **ATS Optimization**: Get actionable suggestions to improve your resume for Applicant Tracking Systems
-- **Bullet Point Generator**: Generate professional resume bullet points based on your experience
-- **Interview Preparation**: Get role-specific interview questions to prepare
-- **Clean UI**: Simple, minimal, and professional dashboard built with React and Tailwind CSS
+- **Smart Resume Analysis**: Just upload your resume and paste a job description. Within seconds, you'll know how well they match (we give you a score out of 100)
+- **Find What's Missing**: We'll tell you exactly which skills the job wants that you haven't mentioned yet
+- **Beat the Bots**: Get practical tips to make your resume ATS-friendly (those are the automated systems that screen resumes)
+- **Write Better Bullets**: Struggling to describe your experience? We'll generate professional bullet points you can actually use
+- **Ace Your Interview**: Get common interview questions for the role you're targeting
+- **Track Your Progress**: Upload multiple versions of your resume and see how you're improving over time
+- **Visual Insights**: Charts and graphs that actually make sense - see your strengths, gaps, and improvements at a glance
 
-## Tech Stack 🛠️
+## What's Under the Hood? 🛠️
 
-### Backend
-- **FastAPI**: Modern Python web framework
-- **PyMuPDF (fitz)**: PDF text extraction
-- **OpenAI API**: Text embeddings and GPT-3.5 for analysis
-- **FAISS**: Vector similarity search
-- **NumPy**: Mathematical operations
+I built this with some pretty cool tech:
 
-### Frontend
-- **React**: UI framework
-- **Vite**: Build tool
-- **Tailwind CSS**: Utility-first CSS framework
-- **Axios**: HTTP client
+**Backend (The Brain)**
+- FastAPI for handling requests super fast
+- OpenAI's GPT models for the smart analysis part
+- FAISS for comparing resumes and job descriptions efficiently
+- Python because it just works
 
-## Prerequisites 📋
+**Frontend (What You See)**
+- React to keep things snappy
+- Tailwind CSS for a clean, modern look
+- Vite because nobody likes waiting for builds
 
-- Python 3.8 or higher
-- Node.js 16 or higher
-- OpenAI API key (get one at https://platform.openai.com)
+## Before You Start 📋
 
-## Installation 🚀
+You'll need:
+- Python 3.8+ (check with `python --version`)
+- Node.js 16+ (check with `node --version`)
+- An OpenAI API key ([grab one here](https://platform.openai.com) - don't worry, they give you free credits to start)
 
-### 1. Clone the Repository
+## Getting Started 🚀
+
+### Quick Setup (5 minutes, I promise!)
+
+**Step 1: Get the code**
 ```bash
-git clone <your-repo-url>
-cd project
+git clone https://github.com/SahanaRamachandran/Career-Compass.git
+cd Career-Compass
 ```
 
-### 2. Backend Setup
-
+**Step 2: Set up the backend**
 ```bash
-# Navigate to backend directory
 cd backend
 
-# Create virtual environment
+# Create a virtual environment (keeps things clean)
 python -m venv venv
 
-# Activate virtual environment
-# On Windows:
+# Turn it on
+# Windows:
 venv\Scripts\activate
-# On Mac/Linux:
-# source venv/bin/activate
+# Mac/Linux:
+source venv/bin/activate
 
-# Install dependencies
+# Install what we need
 pip install -r requirements.txt
 
-# Create .env file
+# Add your OpenAI key
 copy .env.example .env
-# Edit .env and add your OpenAI API key:
-# OPENAI_API_KEY=sk-your-key-here
+# Now open .env and add: OPENAI_API_KEY=your-key-here
 ```
 
-### 3. Frontend Setup
-
+**Step 3: Set up the frontend**
 ```bash
-# Navigate to frontend directory (from project root)
-cd frontend
-
-# Install dependencies
+cd ../frontend
 npm install
 ```
 
-## Running the Application 🏃
+### Running Everything 🏃
 
-### Start Backend Server
-
+**Fire up the backend:**
 ```bash
-# In backend directory with virtual environment activated
 cd backend
 python main.py
 ```
+You'll see it running at http://localhost:8000
 
-The API will be available at `http://localhost:8000`
-
-### Start Frontend Development Server
-
+**Fire up the frontend (in a new terminal):**
 ```bash
-# In frontend directory
 cd frontend
 npm run dev
 ```
+Open your browser to http://localhost:3000 and you're good to go!
 
-The app will be available at `http://localhost:3000`
+## How to Use It 📖
 
-## Usage Guide 📖
+### Analyzing Your Resume
 
-### 1. Resume Analysis
+1. Click on **Resume Analysis**
+2. Upload your resume (PDF only - we all have one lying around)
+3. Copy-paste that job description you're eyeing
+4. Hit **Analyze Resume**
+5. Boom! You'll see:
+   - How good the match is (percentage score)
+   - What you're already great at
+   - Skills you should probably add
+   - Tips to get past those resume robots (ATS systems)
+   - A breakdown of each section of your resume
 
-1. Navigate to the **Resume Analysis** tab
-2. Click to upload your resume (PDF format)
-3. Paste the job description in the text area
-4. Click **Analyze Match**
-5. View your results:
-   - Overall match score (0-100%)
-   - Your strengths
-   - Missing skills
-   - Areas to improve
-   - ATS optimization suggestions
+### Making Your Bullet Points Shine
 
-### 2. Bullet Point Generator
-
-1. Navigate to the **Bullet Points** tab
-2. Describe your work experience
-3. Enter the target job title
+1. Jump to **Bullet Points**
+2. Write about what you actually did in a role (be honest!)
+3. Tell us the job title you're targeting
 4. Click **Generate Bullet Points**
-5. Copy the professional bullet points to your resume
+5. Get 8-10 ready-to-use bullet points. Pick your favorites!
 
-### 3. Interview Preparation
+### Preparing for Interviews
 
-1. Navigate to the **Interview Prep** tab
-2. Paste the job description
-3. Click **Generate Interview Questions**
-4. Review and prepare answers for the role-specific questions
+1. Head to **Interview Prep**
+2. Paste that job description again
+3. Get a list of questions they'll probably ask
+4. Practice your answers (seriously, practice out loud - it helps!)
 
 ## API Endpoints 🔌
 
