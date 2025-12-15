@@ -1,0 +1,179 @@
+import React, { useState } from 'react';
+import UploadSection from './UploadSection';
+import ResultsSection from './ResultsSection';
+import AdvancedAnalysis from './AdvancedAnalysis';
+import LearningRoadmap from './LearningRoadmap';
+import MockInterview from './MockInterview';
+import BulletPointGenerator from './BulletPointGenerator';
+import InterviewPrep from './InterviewPrep';
+import Visualizations from './Visualizations';
+import { analyzeResume } from './api';
+import './index.css';
+
+function App() {
+  const [activeTab, setActiveTab] = useState('analyze');
+  const [results, setResults] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [resumeText, setResumeText] = useState('');
+  const [jobDescription, setJobDescription] = useState('');
+  const [analysisHistory, setAnalysisHistory] = useState([]);
+
+  const handleAnalyze = async (resumeFile, jobDesc, filename = 'resume.pdf') => {
+    setIsLoading(true);
+    setError(null);
+    setResults(null);
+    setJobDescription(jobDesc);
+
+    try {
+      const data = await analyzeResume(resumeFile, jobDesc);
+      setResults(data);
+      
+      // Store resume text for mock interview component
+      if (data.resume_text) {
+        setResumeText(data.resume_text);
+      }
+
+      // Add to history
+      const historyRecord = {
+        timestamp: new Date().toLocaleString(),
+        filename: filename,
+        match_score: data.match_score,
+        match_percentage: data.match_percentage,
+        strengths_count: data.strengths?.length || 0,
+        missing_skills_count: data.missing_skills?.length || 0
+      };
+      setAnalysisHistory(prev => [...prev, historyRecord]);
+      
+    } catch (error) {
+      console.error('Error analyzing resume:', error);
+      const errorMessage = error.response?.data?.detail || 'Failed to analyze resume. Please check your OpenAI API key and try again.';
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const tabs = [
+    { id: 'analyze', label: 'Resume Analysis', icon: '📊' },
+    { id: 'visualize', label: 'Visualizations', icon: '📈' },
+    { id: 'bullets', label: 'Bullet Points', icon: '✍️' },
+    { id: 'interview', label: 'Interview Prep', icon: '💼' },
+    { id: 'roadmap', label: 'Learning Path', icon: '🎯' },
+    { id: 'mock', label: 'Mock Interview', icon: '🎤' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">
+                <span className="text-blue-600">Career</span> Compass
+              </h1>
+              <p className="text-sm text-gray-600 mt-1">Smart Resume-to-Job Matching Platform</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Tabs */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div className="flex space-x-2 border-b border-gray-200">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-6 py-3 font-medium text-sm transition-all ${
+                activeTab === tab.id
+                  ? 'border-b-2 border-blue-600 text-blue-600'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              <span className="mr-2">{tab.icon}</span>
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Analysis Tab */}
+        {activeTab === 'analyze' && (
+          <div className="space-y-8">
+            <UploadSection 
+              onAnalyze={handleAnalyze} 
+              isLoading={isLoading}
+              analysisHistory={analysisHistory}
+            />
+            
+            {error && (
+              <div className="max-w-4xl mx-auto">
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <div className="flex items-start">
+                    <svg className="w-5 h-5 text-red-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div>
+                      <h3 className="text-sm font-medium text-red-800">Error</h3>
+                      <p className="text-sm text-red-700 mt-1">{error}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {results && (
+              <>
+                <ResultsSection results={results} />
+                <AdvancedAnalysis results={results} />
+              </>
+            )}
+          </div>
+        )}
+
+        {/* Visualizations Tab */}
+        {activeTab === 'visualize' && (
+          <Visualizations results={results} analysisHistory={analysisHistory} />
+        )}
+
+        {/* Bullet Points Tab */}
+        {activeTab === 'bullets' && <BulletPointGenerator />}
+
+        {/* Interview Prep Tab */}
+        {activeTab === 'interview' && <InterviewPrep />}
+
+        {/* Learning Roadmap Tab */}
+        {activeTab === 'roadmap' && (
+          <LearningRoadmap 
+            missingSkills={results?.missing_skills || []}
+            currentLevel="Mid-Level"
+            targetRole={jobDescription.split('\n')[0] || 'Software Engineer'}
+          />
+        )}
+
+        {/* Mock Interview Tab */}
+        {activeTab === 'mock' && (
+          <MockInterview 
+            resumeText={resumeText}
+            jobDescription={jobDescription}
+          />
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="mt-16 bg-gray-50 border-t border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center text-sm text-gray-600">
+            <p className="mt-2">Helping students and professionals find their perfect job match</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+export default App;
