@@ -1,4 +1,4 @@
-# Career Compass 🧭
+# Career Compass 
 
 Hey there! Welcome to Career Compass - your personal career assistant that makes job hunting less stressful. Whether you're a student applying for your first job or a professional switching careers, this tool has your back.
 
@@ -33,6 +33,14 @@ You'll need:
 - Python 3.8+ (check with `python --version`)
 - Node.js 16+ (check with `node --version`)
 - An OpenAI API key ([grab one here](https://platform.openai.com) - don't worry, they give you free credits to start)
+=======
+## Prerequisites 
+
+- Python 3.8 or higher
+- Node.js 16 or higher
+
+## Installation 
+>>>>>>> eea2c9e597b606023110a9a7fc1dee0d67c9d9e8
 
 ## Getting Started 🚀
 
@@ -71,7 +79,13 @@ cd ../frontend
 npm install
 ```
 
+<<<<<<< HEAD
 ### Running Everything 🏃
+=======
+## Running the Application 
+
+### Start Backend Server
+>>>>>>> eea2c9e597b606023110a9a7fc1dee0d67c9d9e8
 
 **Fire up the backend:**
 ```bash
@@ -89,6 +103,7 @@ Open your browser to http://localhost:3000 and you're good to go!
 
 ## How to Use It 📖
 
+<<<<<<< HEAD
 ### Analyzing Your Resume
 
 1. Click on **Resume Analysis**
@@ -246,3 +261,8 @@ For issues and questions, please open an issue on GitHub.
 **Built with ❤️ for students and job seekers**
 
 Happy job hunting! 🎯
+=======
+
+
+
+>>>>>>> eea2c9e597b606023110a9a7fc1dee0d67c9d9e8
