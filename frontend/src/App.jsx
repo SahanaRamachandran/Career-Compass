@@ -12,6 +12,7 @@ import RecruiterLens from './RecruiterLens';
 import CareerSwitch from './CareerSwitch';
 import WhatIfSimulator from './WhatIfSimulator';
 import ConsistencyCheck from './ConsistencyCheck';
+import ResumeBuilder from './ResumeBuilder';
 import { analyzeResume } from './api';
 import './index.css';
 
@@ -59,6 +60,7 @@ function App() {
 
   const tabs = [
     { id: 'analyze', label: 'Resume Analysis', icon: '📊' },
+    { id: 'builder', label: 'Resume Builder', icon: '📄' },
     { id: 'voice', label: 'Voice Interview', icon: '🎤' },
     { id: 'consistency', label: 'Consistency Check', icon: '🔍' },
     { id: 'recruiter', label: 'Recruiter Lens', icon: '👁️' },
@@ -138,6 +140,8 @@ function App() {
             )}
           </div>
         )}
+
+        {activeTab === 'builder' && <ResumeBuilder />}
 
         {activeTab === 'voice' && (
           <VoiceInterview 
