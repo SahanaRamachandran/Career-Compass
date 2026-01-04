@@ -45,31 +45,31 @@ const UploadSection = ({ onAnalyze, isLoading, analysisHistory = [] }) => {
   return (
     <div className="space-y-6">
       {analysisHistory.length > 0 && (
-        <div className="card max-w-4xl mx-auto">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-            <svg className="w-5 h-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="card max-w-4xl mx-auto animate-slide-in">
+          <h3 className="text-lg font-semibold text-slate-200 mb-4 flex items-center">
+            <svg className="w-5 h-5 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             Analysis History ({analysisHistory.length})
           </h3>
           <div className="space-y-2 max-h-48 overflow-y-auto">
             {analysisHistory.slice(-5).reverse().map((record, idx) => (
-              <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded border border-gray-200">
+              <div key={idx} className="flex items-center justify-between p-3 bg-slate-900/50 rounded-lg border border-slate-700 hover:border-indigo-500/50 transition-all">
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-800">{record.filename}</p>
-                  <p className="text-xs text-gray-500">{record.timestamp}</p>
+                  <p className="text-sm font-medium text-slate-200">{record.filename}</p>
+                  <p className="text-xs text-slate-400">{record.timestamp}</p>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="text-right">
                     <p className={`text-lg font-bold ${
-                      record.match_percentage >= 80 ? 'text-green-600' :
-                      record.match_percentage >= 60 ? 'text-yellow-600' : 'text-red-600'
+                      record.match_percentage >= 80 ? 'text-green-400' :
+                      record.match_percentage >= 60 ? 'text-yellow-400' : 'text-red-400'
                     }`}>{record.match_percentage}%</p>
-                    <p className="text-xs text-gray-500">Match</p>
+                    <p className="text-xs text-slate-500">Match</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-gray-700">{record.missing_skills_count}</p>
-                    <p className="text-xs text-gray-500">Missing</p>
+                    <p className="text-sm text-slate-300">{record.missing_skills_count}</p>
+                    <p className="text-xs text-slate-500">Missing</p>
                   </div>
                 </div>
               </div>
@@ -79,11 +79,11 @@ const UploadSection = ({ onAnalyze, isLoading, analysisHistory = [] }) => {
       )}
 
       <div className="card max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Let's See How Your Resume Stacks Up</h2>
+        <h2 className="section-header">Let's See How Your Resume Stacks Up</h2>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-slate-300 mb-2">
               Your Resume (PDF - you can upload multiple if you want to compare)
             </label>
             <input
@@ -97,14 +97,14 @@ const UploadSection = ({ onAnalyze, isLoading, analysisHistory = [] }) => {
             />
             <label
               htmlFor="resume-upload"
-              className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
+              className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer transition-all duration-300 ${
                 files.length > 0
-                  ? 'border-green-500 bg-green-50'
-                  : 'border-gray-300 hover:border-blue-500 bg-gray-50 hover:bg-blue-50'
+                  ? 'border-green-500 bg-green-500/10'
+                  : 'border-slate-600 hover:border-indigo-500 bg-slate-900/30 hover:bg-slate-800/50'
               } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <svg
-                className={`w-10 h-10 mb-2 ${files.length > 0 ? 'text-green-500' : 'text-gray-400'}`}
+                className={`w-10 h-10 mb-2 ${files.length > 0 ? 'text-green-400' : 'text-slate-400'}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -116,20 +116,20 @@ const UploadSection = ({ onAnalyze, isLoading, analysisHistory = [] }) => {
                   d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                 />
               </svg>
-              <p className={`text-sm ${files.length > 0 ? 'text-green-600 font-medium' : 'text-gray-600'}`}>
+              <p className={`text-sm ${files.length > 0 ? 'text-green-400 font-medium' : 'text-slate-300'}`}>
                 {files.length > 0 ? `${files.length} file(s) uploaded` : 'Click to upload resume(s)'}
               </p>
-              <p className="text-xs text-gray-500 mt-1">PDF (MAX. 10MB each)</p>
+              <p className="text-xs text-slate-500 mt-1">PDF (MAX. 10MB each)</p>
             </label>
 
             {files.length > 0 && (
               <div className="mt-4 space-y-2">
-                <h4 className="text-sm font-semibold text-gray-700">Uploaded Files:</h4>
+                <h4 className="text-sm font-semibold text-slate-300">Uploaded Files:</h4>
                 {files.map((f, idx) => (
                   <div
                     key={idx}
-                    className={`flex items-center justify-between p-2 rounded border ${
-                      selectedFileIndex === idx ? 'border-blue-500 bg-blue-50' : 'border-gray-200 bg-gray-50'
+                    className={`flex items-center justify-between p-3 rounded-lg border transition-all ${
+                      selectedFileIndex === idx ? 'border-indigo-500 bg-indigo-500/10' : 'border-slate-700 bg-slate-900/30 hover:border-slate-600'
                     }`}
                   >
                     <div className="flex items-center flex-1">
@@ -137,14 +137,14 @@ const UploadSection = ({ onAnalyze, isLoading, analysisHistory = [] }) => {
                         type="radio"
                         checked={selectedFileIndex === idx}
                         onChange={() => setSelectedFileIndex(idx)}
-                        className="mr-2"
+                        className="mr-3 accent-indigo-500"
                       />
-                      <span className="text-sm text-gray-700 truncate">{f.name}</span>
+                      <span className="text-sm text-slate-200 truncate">{f.name}</span>
                     </div>
                     <button
                       type="button"
                       onClick={() => removeFile(idx)}
-                      className="ml-2 text-red-600 hover:text-red-800 text-sm font-bold"
+                      className="ml-2 text-red-400 hover:text-red-300 text-sm font-bold transition-colors"
                       disabled={isLoading}
                     >
                       ✕
@@ -156,18 +156,18 @@ const UploadSection = ({ onAnalyze, isLoading, analysisHistory = [] }) => {
           </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-slate-300 mb-2">
             The Job You're After
           </label>
           <textarea
-            className="input-field resize-none text-gray-900"
+            className="input-field resize-none"
             rows="8"
             placeholder="Copy the full job posting here - responsibilities, requirements, everything!"
             value={jobDescription}
             onChange={(e) => setJobDescription(e.target.value)}
             disabled={isLoading}
           />
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-slate-500">
             {jobDescription.length} characters (needs at least 50 - the more you add, the better the analysis)
           </p>
         </div>

@@ -29,15 +29,15 @@ const InterviewPrep = () => {
 
   return (
     <div className="card max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Interview Preparation</h2>
+      <h2 className="text-2xl font-bold text-slate-200 mb-6">Interview Preparation</h2>
       
       <form onSubmit={handleGenerate} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-slate-300 mb-2">
             Job Description
           </label>
           <textarea
-            className="input-field resize-none text-gray-900"
+            className="input-field resize-none"
             rows="6"
             placeholder="Paste the job description to get relevant interview questions..."
             value={jobDescription}
@@ -57,17 +57,17 @@ const InterviewPrep = () => {
 
       {questions.length > 0 && (
         <div className="mt-6 space-y-4">
-          <h3 className="text-lg font-semibold text-gray-800">Prepare for These Questions:</h3>
+          <h3 className="text-lg font-semibold text-slate-200">Prepare for These Questions:</h3>
           {questions.map((question, index) => (
             <div
               key={index}
-              className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200"
+              className="p-4 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-lg border border-purple-500/30"
             >
               <div className="flex items-start">
                 <span className="flex-shrink-0 w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold mr-3">
                   {index + 1}
                 </span>
-                <p className="text-gray-700 flex-1 pt-1">{question}</p>
+                <p className="text-slate-300 flex-1 pt-1">{question}</p>
               </div>
             </div>
           ))}

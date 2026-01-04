@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Any
 
 
 class JobDescriptionInput(BaseModel):
@@ -84,7 +84,7 @@ class ATSOptimizationResponse(BaseModel):
     is_ats_friendly: bool
     issues: List[str]
     recommendations: List[str]
-    keyword_optimization: Dict[str, any]
+    keyword_optimization: Dict[str, Any]
     formatting_issues: List[str]
 
 

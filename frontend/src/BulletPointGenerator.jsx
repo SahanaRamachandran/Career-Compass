@@ -40,15 +40,15 @@ const BulletPointGenerator = () => {
 
   return (
     <div className="card max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Turn Your Work Into Resume Gold</h2>
+      <h2 className="text-2xl font-bold text-slate-200 mb-6">Turn Your Work Into Resume Gold</h2>
       
       <form onSubmit={handleGenerate} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-slate-300 mb-2">
             What Did You Actually Do?
           </label>
           <textarea
-            className="input-field resize-none text-gray-900"
+            className="input-field resize-none"
             rows="4"
             placeholder="Just describe your work in your own words - don't worry about making it sound fancy yet. Example: 'I managed a team that built a new feature' or 'I helped customers solve technical problems'"
             value={experience}
@@ -58,12 +58,12 @@ const BulletPointGenerator = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-slate-300 mb-2">
             What Job Are You Going For?
           </label>
           <input
             type="text"
-            className="input-field text-gray-900"
+            className="input-field"
             placeholder="Software Engineer, Marketing Manager, Data Analyst..."
             value={jobTitle}
             onChange={(e) => setJobTitle(e.target.value)}
@@ -83,7 +83,7 @@ const BulletPointGenerator = () => {
       {bulletPoints.length > 0 && (
         <div className="mt-8">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-800">
+            <h3 className="text-lg font-semibold text-slate-200">
               ✨ Generated {bulletPoints.length} Professional Bullet Points
             </h3>
             <button
@@ -101,15 +101,15 @@ const BulletPointGenerator = () => {
             {bulletPoints.map((point, index) => (
               <div
                 key={index}
-                className="flex items-start gap-3 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg hover:shadow-md transition-shadow border border-gray-200"
+                className="flex items-start gap-3 p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg hover:shadow-md transition-shadow border border-slate-600"
               >
-                <span className="text-blue-600 font-bold text-lg mt-1">•</span>
+                <span className="text-blue-400 font-bold text-lg mt-1">•</span>
                 <div className="flex-1">
-                  <p className="text-gray-800 leading-relaxed">{point}</p>
+                  <p className="text-slate-200 leading-relaxed">{point}</p>
                 </div>
                 <button
                   onClick={() => copyToClipboard(point)}
-                  className="ml-3 px-3 py-1 text-blue-600 hover:bg-blue-100 rounded text-sm font-medium transition-colors"
+                  className="ml-3 px-3 py-1 text-blue-400 hover:bg-blue-500/20 rounded text-sm font-medium transition-colors"
                   title="Copy to clipboard"
                 >
                   📋 Copy

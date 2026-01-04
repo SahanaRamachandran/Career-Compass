@@ -87,20 +87,20 @@ const VoiceInterview = ({ resumeText, jobDescription }) => {
   };
 
   const getScoreColor = (score) => {
-    if (score >= 80) return 'text-green-600';
-    if (score >= 60) return 'text-yellow-600';
-    return 'text-red-600';
+    if (score >= 80) return 'text-green-400';
+    if (score >= 60) return 'text-yellow-400';
+    return 'text-red-400';
   };
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="card">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">🎤 Voice Interview Simulator</h2>
-        <p className="text-gray-600 mb-6">Practice answering interview questions with real-time feedback</p>
+        <h2 className="section-header">🎤 Voice Interview Simulator</h2>
+        <p className="text-slate-400 mb-6">Practice answering interview questions with real-time feedback</p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
-          <h3 className="font-semibold text-gray-900 mb-3">Current Question:</h3>
-          <p className="text-lg text-gray-800">{currentQuestion || sampleQuestions[questionIndex]}</p>
+        <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-lg p-6 mb-6">
+          <h3 className="font-semibold text-slate-200 mb-3">Current Question:</h3>
+          <p className="text-lg text-slate-100">{currentQuestion || sampleQuestions[questionIndex]}</p>
         </div>
 
         <div className="flex gap-4 mb-6">
@@ -136,7 +136,7 @@ const VoiceInterview = ({ resumeText, jobDescription }) => {
 
           <button
             onClick={nextQuestion}
-            className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+            className="btn-outline"
           >
             Next Question
           </button>
@@ -144,81 +144,96 @@ const VoiceInterview = ({ resumeText, jobDescription }) => {
 
         {transcript && (
           <div className="mb-6">
-            <h3 className="font-semibold text-gray-900 mb-2">Your Answer:</h3>
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-              <p className="text-gray-800">{transcript}</p>
-            </div>
+            <h3 className="font-semibold text-slate-200 mb-2">Your Answer:</h3>
+            <textarea
+              value={transcript}
+              onChange={(e) => setTranscript(e.target.value)}
+              className="input-field resize-none min-h-[120px]"
+              placeholder="Your answer will appear here... or type manually if voice isn't working"
+            />
+          </div>
+        )}
+
+        {!transcript && (
+          <div className="mb-6">
+            <h3 className="font-semibold text-slate-200 mb-2">Or Type Your Answer:</h3>
+            <textarea
+              value={transcript}
+              onChange={(e) => setTranscript(e.target.value)}
+              className="input-field resize-none min-h-[120px]"
+              placeholder="Type your answer here if voice recording isn't working..."
+            />
           </div>
         )}
 
         {feedback && (
           <div className="space-y-4">
             <div className="grid grid-cols-4 gap-4">
-              <div className="text-center p-4 bg-white border rounded-lg">
-                <p className="text-sm text-gray-600 mb-1">Relevance</p>
+              <div className="stat-card text-center">
+                <p className="text-sm text-slate-400 mb-1">Relevance</p>
                 <p className={`text-2xl font-bold ${getScoreColor(feedback.relevance_score)}`}>
                   {feedback.relevance_score}
                 </p>
               </div>
-              <div className="text-center p-4 bg-white border rounded-lg">
-                <p className="text-sm text-gray-600 mb-1">Clarity</p>
+              <div className="stat-card text-center">
+                <p className="text-sm text-slate-400 mb-1">Clarity</p>
                 <p className={`text-2xl font-bold ${getScoreColor(feedback.clarity_score)}`}>
                   {feedback.clarity_score}
                 </p>
               </div>
-              <div className="text-center p-4 bg-white border rounded-lg">
-                <p className="text-sm text-gray-600 mb-1">Skill Alignment</p>
+              <div className="stat-card text-center">
+                <p className="text-sm text-slate-400 mb-1">Skill Alignment</p>
                 <p className={`text-2xl font-bold ${getScoreColor(feedback.skill_alignment_score)}`}>
                   {feedback.skill_alignment_score}
                 </p>
               </div>
-              <div className="text-center p-4 bg-white border rounded-lg">
-                <p className="text-sm text-gray-600 mb-1">Overall</p>
+              <div className="stat-card text-center">
+                <p className="text-sm text-slate-400 mb-1">Overall</p>
                 <p className={`text-2xl font-bold ${getScoreColor(feedback.overall_score)}`}>
                   {feedback.overall_score}
                 </p>
               </div>
             </div>
 
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <h3 className="font-semibold text-gray-900 mb-2">💡 Feedback</h3>
+            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+              <h3 className="font-semibold text-slate-200 mb-2">💡 Feedback</h3>
               <ul className="space-y-1">
                 {feedback.feedback.map((item, idx) => (
-                  <li key={idx} className="text-gray-700">• {item}</li>
+                  <li key={idx} className="text-slate-300">• {item}</li>
                 ))}
               </ul>
             </div>
 
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <h3 className="font-semibold text-gray-900 mb-2">✨ Improved Answer</h3>
-              <p className="text-gray-700">{feedback.improved_answer}</p>
+            <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+              <h3 className="font-semibold text-slate-200 mb-2">✨ Improved Answer</h3>
+              <p className="text-slate-300">{feedback.improved_answer}</p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-900 mb-2">✓ Points Covered</h3>
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+                <h3 className="font-semibold text-slate-200 mb-2">✓ Points Covered</h3>
                 <ul className="space-y-1">
                   {feedback.key_points_covered.map((point, idx) => (
-                    <li key={idx} className="text-gray-700 text-sm">• {point}</li>
+                    <li key={idx} className="text-slate-300 text-sm">• {point}</li>
                   ))}
                 </ul>
               </div>
 
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-900 mb-2">✗ Missing Points</h3>
+              <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                <h3 className="font-semibold text-slate-200 mb-2">✗ Missing Points</h3>
                 <ul className="space-y-1">
                   {feedback.missing_points.map((point, idx) => (
-                    <li key={idx} className="text-gray-700 text-sm">• {point}</li>
+                    <li key={idx} className="text-slate-300 text-sm">• {point}</li>
                   ))}
                 </ul>
               </div>
             </div>
 
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-              <h3 className="font-semibold text-gray-900 mb-2">❓ Follow-up Questions</h3>
+            <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+              <h3 className="font-semibold text-slate-200 mb-2">❓ Follow-up Questions</h3>
               <ul className="space-y-1">
                 {feedback.follow_up_questions.map((q, idx) => (
-                  <li key={idx} className="text-gray-700">{idx + 1}. {q}</li>
+                  <li key={idx} className="text-slate-300">{idx + 1}. {q}</li>
                 ))}
               </ul>
             </div>

@@ -41,12 +41,12 @@ const CareerSwitch = ({ resumeText }) => {
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="card">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">🔄 Career Switch Advisor</h2>
-        <p className="text-gray-600 mb-6">Explore alternative career paths and transition strategies</p>
+        <h2 className="text-2xl font-bold text-slate-200 mb-4">🔄 Career Switch Advisor</h2>
+        <p className="text-slate-400 mb-6">Explore alternative career paths and transition strategies</p>
 
         <div className="space-y-4 mb-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-slate-300 mb-2">
               Target Role
             </label>
             <input
@@ -70,39 +70,39 @@ const CareerSwitch = ({ resumeText }) => {
         {analysis && (
           <div className="space-y-6">
             <div className="grid grid-cols-3 gap-4">
-              <div className={`text-center p-6 rounded-lg border ${analysis.is_feasible ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
-                <p className="text-sm text-gray-600 mb-2">Feasibility</p>
+              <div className={`text-center p-6 rounded-lg border ${analysis.is_feasible ? 'bg-green-500/20 border-green-500/30' : 'bg-red-500/20 border-red-500/30'}`}>
+                <p className="text-sm text-slate-400 mb-2">Feasibility</p>
                 <p className={`text-2xl font-bold ${analysis.is_feasible ? 'text-green-600' : 'text-red-600'}`}>
                   {analysis.is_feasible ? 'Possible' : 'Challenging'}
                 </p>
               </div>
-              <div className="text-center p-6 bg-yellow-50 rounded-lg border border-yellow-200">
-                <p className="text-sm text-gray-600 mb-2">Skill Gap</p>
+              <div className="text-center p-6 bg-yellow-500/20 rounded-lg border border-yellow-500/30">
+                <p className="text-sm text-slate-400 mb-2">Skill Gap</p>
                 <p className="text-2xl font-bold text-yellow-600">{analysis.gap_percentage}%</p>
               </div>
-              <div className="text-center p-6 bg-purple-50 rounded-lg border border-purple-200">
-                <p className="text-sm text-gray-600 mb-2">Difficulty</p>
+              <div className="text-center p-6 bg-purple-500/20 rounded-lg border border-purple-500/30">
+                <p className="text-sm text-slate-400 mb-2">Difficulty</p>
                 <p className={`text-2xl font-bold ${getDifficultyColor(analysis.transition_difficulty)}`}>
                   {analysis.transition_difficulty}
                 </p>
               </div>
             </div>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-              <h3 className="font-semibold text-gray-900 mb-2">⏱️ Estimated Timeline</h3>
-              <p className="text-2xl font-bold text-blue-600">{analysis.timeline}</p>
+            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-6">
+              <h3 className="font-semibold text-slate-200 mb-2">⏱️ Estimated Timeline</h3>
+              <p className="text-2xl font-bold text-blue-400">{analysis.timeline}</p>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <div className="bg-slate-800/50 border border-slate-600 rounded-lg p-6">
+              <h3 className="font-semibold text-slate-200 mb-4 flex items-center gap-2">
                 <span className="text-2xl">🎯</span>
                 <span>Alternative Roles (Better Match)</span>
               </h3>
               <div className="space-y-4">
                 {analysis.alternative_roles.map((role, idx) => (
-                  <div key={idx} className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50">
+                  <div key={idx} className="border border-slate-600 bg-slate-800/30 rounded-lg p-4 hover:bg-slate-700/30">
                     <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-semibold text-gray-900">{role.role}</h4>
+                      <h4 className="font-semibold text-slate-200">{role.role}</h4>
                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                         role.match_percentage >= 80 ? 'bg-green-100 text-green-800' :
                         role.match_percentage >= 60 ? 'bg-yellow-100 text-yellow-800' :
@@ -111,7 +111,7 @@ const CareerSwitch = ({ resumeText }) => {
                         {role.match_percentage}% Match
                       </span>
                     </div>
-                    <p className="text-gray-600 text-sm mb-3">{role.reason}</p>
+                    <p className="text-slate-400 text-sm mb-3">{role.reason}</p>
                     <div className="flex flex-wrap gap-2">
                       {role.required_skills.map((skill, skillIdx) => (
                         <span key={skillIdx} className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">
@@ -124,8 +124,8 @@ const CareerSwitch = ({ resumeText }) => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6">
-              <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <div className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/30 rounded-lg p-6">
+              <h3 className="font-semibold text-slate-200 mb-4 flex items-center gap-2">
                 <span className="text-2xl">🗺️</span>
                 <span>Recommended Transition Path</span>
               </h3>
@@ -136,7 +136,7 @@ const CareerSwitch = ({ resumeText }) => {
                       {idx + 1}
                     </div>
                     <div className="flex-1 pt-1">
-                      <p className="text-gray-800">{step}</p>
+                      <p className="text-slate-300">{step}</p>
                     </div>
                   </div>
                 ))}

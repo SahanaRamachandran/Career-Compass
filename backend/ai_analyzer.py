@@ -15,60 +15,134 @@ class AIAnalyzer:
         if not api_key:
             raise ValueError("OpenAI API key not found - please add it to your .env file")
         self.client = OpenAI(api_key=api_key)
-        self.model = "gpt-3.5-turbo"
+        self.model = "gpt-4o-mini"
     
     def analyze_match(self, resume_text: str, job_description: str, similarity_score: float) -> Dict:
         
-        prompt = f"""You're an experienced career counselor analyzing resume-job fit.
+        example_json = '''{
+  "match_percentage": 65,
+  "match_explanation": "Specific explanation",
+  "missing_skills": ["skill 1", "skill 2"],
+  "weak_areas": ["weakness 1", "weakness 2"],
+  "strengths": ["strength 1", "strength 2"],
+  "ats_suggestions": ["suggestion 1", "suggestion 2"],
+  "keywords_found": ["keyword 1", "keyword 2"],
+  "keywords_missing": ["missing keyword"],
+  "keyword_density_score": 65,
+  "role_suitability": {"level": "Mid-Level", "confidence": "Medium", "reasoning": "reason"},
+  "resume_sections_analysis": {
+    "experience": {"score": 70, "impact": "High", "feedback": "feedback"},
+    "skills": {"score": 60, "impact": "High", "feedback": "feedback"},
+    "education": {"score": 75, "impact": "Medium", "feedback": "feedback"}
+  },
+  "bullet_point_analysis": ["observation"],
+  "consistency_issues": ["issue"],
+  "career_gaps": [],
+  "summary": "2-sentence assessment"
+}'''
+        
+        prompt = f"""You are an expert technical recruiter analyzing a resume against a job description. Provide a DETAILED, ACCURATE, and CRITICAL analysis.
 
-Resume:
-{resume_text[:3000]}
+=== RESUME ===
+{resume_text[:2500]}
 
-Job Description:
-{job_description[:2000]}
+=== JOB DESCRIPTION ===
+{job_description[:2500]}
 
-Initial match score from our algorithm: {similarity_score:.2f} (on a 0-1 scale)
+=== INSTRUCTIONS ===
 
-Give me a detailed breakdown in JSON format. Here's exactly what I need:
+1. MATCH PERCENTAGE (0-100):
+   - Compare EVERY requirement in the job description against the resume
+   - 80-100: Nearly perfect match with all key requirements
+   - 60-79: Good match, missing 1-2 important skills
+   - 40-59: Moderate match, several gaps
+   - 0-39: Poor match, major gaps
+   - BE STRICT - don't inflate scores
+
+2. KEYWORDS ANALYSIS:
+   - Extract 5-10 SPECIFIC technical skills/tools from the job description
+   - Mark as "found" ONLY if explicitly mentioned in resume
+   - Mark as "missing" if in job but NOT in resume
+   - Include: programming languages, frameworks, tools, methodologies
+
+3. SKILLS ASSESSMENT:
+   - List 3-5 SPECIFIC missing skills from the job requirements
+   - List 2-3 SPECIFIC weak areas (things mentioned but underqualified)
+   - List 2-3 SPECIFIC strengths (where resume exceeds requirements)
+
+4. SECTION SCORES (0-100 each):
+   - Experience: Years + relevance + depth + achievements
+   - Skills: Technical breadth + depth + currency
+   - Education: Degree level + field relevance + certifications
+
+5. ATS & IMPROVEMENTS:
+   - 3-4 ACTIONABLE suggestions to improve resume
+   - Focus on missing keywords, formatting, quantification
+
+Return ONLY this JSON structure (no markdown blocks):
 {{
-  "match_percentage": <0-100 integer>,
-  "match_explanation": "2-3 sentences explaining why this score was given",
+  "match_percentage": <number>,
+  "match_explanation": "<specific reason for the score>",
   "missing_skills": ["skill1", "skill2", "skill3"],
   "weak_areas": ["area1", "area2"],
-  "strengths": ["strength1", "strength2", "strength3"],
-  "ats_suggestions": ["suggestion1", "suggestion2", "suggestion3"],
-  "keywords_found": ["keyword1", "keyword2"],
-  "keywords_missing": ["keyword1", "keyword2"],
-  "keyword_density_score": <0-100 integer>,
-  "role_suitability": {{"level": "Junior/Mid/Senior/Lead", "confidence": "High/Medium/Low", "reasoning": "brief explanation"}},
+  "strengths": ["strength1", "strength2"],
+  "ats_suggestions": ["tip1", "tip2", "tip3"],
+  "keywords_found": ["keyword1", "keyword2", "keyword3"],
+  "keywords_missing": ["missing1", "missing2"],
+  "keyword_density_score": <number>,
+  "role_suitability": {{"level": "Entry/Mid-Level/Senior/Lead", "confidence": "High/Medium/Low", "reasoning": "why this level"}},
   "resume_sections_analysis": {{
-    "experience": {{"score": <0-100>, "impact": "High/Medium/Low", "feedback": "brief comment"}},
-    "skills": {{"score": <0-100>, "impact": "High/Medium/Low", "feedback": "brief comment"}},
-    "education": {{"score": <0-100>, "impact": "Medium/Low", "feedback": "brief comment"}}
+    "experience": {{"score": <number>, "impact": "High/Medium/Low", "feedback": "specific feedback"}},
+    "skills": {{"score": <number>, "impact": "High/Medium/Low", "feedback": "specific feedback"}},
+    "education": {{"score": <number>, "impact": "High/Medium/Low", "feedback": "specific feedback"}}
   }},
-  "bullet_point_analysis": ["Strong action verb usage", "Lacks quantifiable metrics", "Good specificity"],
-  "consistency_issues": ["Inconsistent date formats", "Varying bullet styles"],
-  "career_gaps": ["Gap detected: May 2020 - Aug 2020"],
-  "summary": "Brief overall assessment"
+  "bullet_point_analysis": ["observation1", "observation2"],
+  "consistency_issues": ["issue if any"],
+  "career_gaps": [],
+  "summary": "2-3 sentence honest assessment"
 }}
 
-Be honest and specific - no generic advice!"""
+Be CRITICAL, SPECIFIC, and ACCURATE. Base everything on actual content."""
 
         try:
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
-                    {"role": "system", "content": "You're a career advisor with hiring experience. Be honest and helpful."},
+                    {"role": "system", "content": "You are an expert technical recruiter with 15+ years of experience. Analyze resumes with precision and honesty. Return ONLY valid JSON with no markdown formatting."},
                     {"role": "user", "content": prompt}
                 ],
-                temperature=0.7,
-                max_tokens=800
+                temperature=0.2,
+                max_tokens=3000
             )
             
-            content = response.choices[0].message.content
-            json_match = re.search(r'\{.*\}', content, re.DOTALL)
-            if json_match:
-                return json.loads(json_match.group())
+            content = response.choices[0].message.content.strip()
+            print(f"Raw OpenAI response length: {len(content)} chars")
+            
+            # Remove markdown code blocks
+            content = re.sub(r'^```json\s*', '', content)
+            content = re.sub(r'^```\s*', '', content)
+            content = re.sub(r'\s*```$', '', content)
+            content = content.strip()
+            
+            # Try to parse directly first
+            try:
+                result = json.loads(content)
+                print("Successfully parsed JSON")
+                return result
+            except json.JSONDecodeError:
+                # Try to extract JSON object
+                json_match = re.search(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', content, re.DOTALL)
+                if json_match:
+                    try:
+                        result = json.loads(json_match.group())
+                        print("Successfully extracted and parsed JSON")
+                        return result
+                    except json.JSONDecodeError as e:
+                        print(f"JSON decode error: {str(e)}")
+                        print(f"Content: {content[:300]}...")
+                        return self._create_fallback_analysis(similarity_score)
+            
+            print("No valid JSON found in response")
             return self._create_fallback_analysis(similarity_score)
                 
         except Exception as e:
@@ -364,32 +438,32 @@ Format as JSON array:
         
         return {
             "match_percentage": match_pct,
-            "match_explanation": f"Your resume shows a {match_pct}% semantic match with the job requirements.",
-            "missing_skills": ["Specific technical skills from job description"],
-            "weak_areas": ["Quantifiable achievements", "Keyword optimization"],
-            "strengths": ["Relevant experience", "Clear communication"],
+            "match_explanation": f"Analysis incomplete. Semantic match: {match_pct}%. Please retry or check your OpenAI API key.",
+            "missing_skills": ["Could not extract - API error"],
+            "weak_areas": ["Analysis incomplete", "Please retry with valid API key"],
+            "strengths": ["Could not analyze due to API error"],
             "ats_suggestions": [
-                "Add more keywords from the job description",
-                "Include quantifiable metrics and achievements",
-                "Use standard section headings (Experience, Education, Skills)"
+                "This is fallback data - AI analysis failed",
+                "Check your OpenAI API key is valid",
+                "Ensure you have API credits available"
             ],
-            "keywords_found": ["Experience", "Skills"],
-            "keywords_missing": ["Specific job keywords"],
+            "keywords_found": ["Analysis", "Failed"],
+            "keywords_missing": ["Check API key"],
             "keyword_density_score": match_pct,
             "role_suitability": {
-                "level": "Mid-Level",
-                "confidence": "Medium",
-                "reasoning": "Based on experience shown"
+                "level": "Unknown",
+                "confidence": "Low",
+                "reasoning": "API analysis failed - using fallback"
             },
             "resume_sections_analysis": {
-                "experience": {"score": match_pct, "impact": "High", "feedback": "Good experience section"},
-                "skills": {"score": match_pct - 10, "impact": "High", "feedback": "Add more relevant skills"},
-                "education": {"score": 75, "impact": "Medium", "feedback": "Education section present"}
+                "experience": {"score": 50, "impact": "High", "feedback": "Could not analyze - API error"},
+                "skills": {"score": 50, "impact": "High", "feedback": "Could not analyze - API error"},
+                "education": {"score": 50, "impact": "Medium", "feedback": "Could not analyze - API error"}
             },
-            "bullet_point_analysis": ["Review bullet points for action verbs", "Add quantifiable metrics"],
-            "consistency_issues": ["Check formatting consistency"],
+            "bullet_point_analysis": ["API analysis failed - check your OpenAI key"],
+            "consistency_issues": ["Analysis incomplete"],
             "career_gaps": [],
-            "summary": f"Your resume has a {match_pct}% match. Focus on incorporating more specific keywords and achievements."
+            "summary": "⚠️ AI analysis failed. This is fallback data. Check your OpenAI API key and credits."
         }
     
     def analyze_voice_answer(self, transcript: str, question: str, job_desc: str, resume_text: str) -> Dict:
@@ -441,39 +515,87 @@ Return JSON:
             return self._fallback_voice_analysis()
     
     def check_consistency(self, resume_text: str, interview_answers: List[Dict]) -> Dict:
-        answers_text = "\n".join([f"Q: {a['question']}\nA: {a['answer']}" for a in interview_answers[:3]])
+        answers_text = "\n".join([f"Q: {a['question']}\nA: {a['answer']}" for a in interview_answers[:5]])
         
-        prompt = f"""Compare resume claims with interview answers for consistency.
+        prompt = f"""You are a HIGHLY SKEPTICAL recruiter verifying if interview answers match the resume. Be CRITICAL and THOROUGH.
 
-Resume: {resume_text[:1000]}
+=== RESUME ===
+{resume_text[:2000]}
 
-Interview Answers: {answers_text}
+=== INTERVIEW ANSWERS ===
+{answers_text}
 
-Check for contradictions, exaggerations, or weak claims.
+=== DETAILED ANALYSIS INSTRUCTIONS ===
 
-Return JSON:
+1. CHECK FOR CONTRADICTIONS:
+   - Compare dates, timelines, job titles, company names
+   - Compare technical skills claimed vs demonstrated
+   - Compare project descriptions
+   - Flag ANY inconsistency, no matter how small
+
+2. RELEVANCE CHECK:
+   - If answers discuss experiences NOT mentioned in resume = RED FLAG
+   - If answers are completely unrelated to resume content = MAJOR RED FLAG
+   - If answers mention technologies/skills not in resume = inconsistency
+
+3. SCORING CRITERIA (overall_consistency 0-100):
+   - 90-100: Perfect alignment, answers directly support resume
+   - 70-89: Good alignment, minor discrepancies
+   - 50-69: Moderate concerns, some inconsistencies
+   - 30-49: Significant issues, multiple contradictions
+   - 0-29: MAJOR RED FLAGS - answers don't match resume at all
+
+4. SEVERITY LEVELS:
+   - High: Contradicts major claims (job title, years, key skills)
+   - Medium: Contradicts minor details or shows weak evidence
+   - Low: Slight inconsistency or needs clarification
+
+Return ONLY this JSON (no markdown):
 {{
-  "overall_consistency": 85,
-  "contradictions": [{{"claim": "Resume says X", "answer": "Interview says Y", "severity": "Medium"}}],
-  "weak_claims": [{{"claim": "Led team of 10", "issue": "No supporting evidence in answers"}}],
-  "areas_to_clarify": ["Area 1", "Area 2"],
-  "red_flags": ["Red flag 1"]
-}}"""
+  "overall_consistency": <number 0-100>,
+  "contradictions": [
+    {{"claim": "Resume states: [exact claim]", "answer": "Interview states: [exact quote]", "severity": "High/Medium/Low"}}
+  ],
+  "weak_claims": [
+    {{"claim": "Specific claim from resume", "issue": "Why interview answer doesn't support it"}}
+  ],
+  "areas_to_clarify": ["Specific area that needs explanation"],
+  "red_flags": ["Specific red flag with explanation"]
+}}
+
+BE BRUTALLY HONEST. If answers are unrelated to resume, score should be 20-40% with clear red flags."""
 
         try:
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
-                    {"role": "system", "content": "You're a recruiter checking candidate consistency."},
+                    {"role": "system", "content": "You are a skeptical recruiter with a keen eye for inconsistencies. Return ONLY valid JSON."},
                     {"role": "user", "content": prompt}
                 ],
-                temperature=0.6,
-                max_tokens=500
+                temperature=0.2,
+                max_tokens=2000
             )
-            content = response.choices[0].message.content
-            json_match = re.search(r'\{.*\}', content, re.DOTALL)
+            content = response.choices[0].message.content.strip()
+            # Clean markdown if present
+            content = re.sub(r'^```json\\s*', '', content)
+            content = re.sub(r'^```\\s*', '', content)
+            content = re.sub(r'\\s*```$', '', content)
+            
+            json_match = re.search(r'\\{.*\\}', content, re.DOTALL)
             if json_match:
-                return json.loads(json_match.group())
+                result = json.loads(json_match.group())
+                # Ensure all required fields exist
+                if 'overall_consistency' not in result:
+                    result['overall_consistency'] = 50
+                if 'contradictions' not in result:
+                    result['contradictions'] = []
+                if 'weak_claims' not in result:
+                    result['weak_claims'] = []
+                if 'areas_to_clarify' not in result:
+                    result['areas_to_clarify'] = []
+                if 'red_flags' not in result:
+                    result['red_flags'] = []
+                return result
             return self._fallback_consistency()
         except Exception as e:
             print(f"Consistency check error: {str(e)}")
@@ -621,11 +743,11 @@ Return JSON:
     
     def _fallback_consistency(self) -> Dict:
         return {
-            "overall_consistency": 80,
-            "contradictions": [],
-            "weak_claims": [],
-            "areas_to_clarify": ["Provide more details about key projects"],
-            "red_flags": []
+            "overall_consistency": 50,
+            "contradictions": [{"claim": "Unable to analyze", "answer": "API error occurred", "severity": "Medium"}],
+            "weak_claims": [{"claim": "Analysis incomplete", "issue": "Could not complete AI analysis"}],
+            "areas_to_clarify": ["Retry analysis - API error occurred"],
+            "red_flags": ["Analysis may be inaccurate due to API error"]
         }
     
     def _fallback_recruiter_lens(self) -> Dict:

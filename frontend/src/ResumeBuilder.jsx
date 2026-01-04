@@ -273,13 +273,13 @@ const ResumeBuilder = () => {
       <div className="card">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">📄 Resume Builder</h2>
-            <p className="text-gray-600">Create a professional resume in minutes</p>
+            <h2 className="text-2xl font-bold text-slate-200">📄 Resume Builder</h2>
+            <p className="text-slate-400">Create a professional resume in minutes</p>
           </div>
           <div className="flex gap-3">
             <button
               onClick={() => setPreviewMode(!previewMode)}
-              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="px-4 py-2 border border-slate-600 bg-slate-800 text-slate-200 rounded-lg hover:bg-slate-700"
             >
               {previewMode ? 'Edit' : 'Preview'}
             </button>
@@ -297,15 +297,15 @@ const ResumeBuilder = () => {
 
         {!previewMode ? (
           <div className="space-y-8">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Personal Information</h3>
+            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-slate-200 mb-4">Personal Information</h3>
               <div className="grid grid-cols-2 gap-4">
                 <input
                   type="text"
                   placeholder="Full Name *"
                   value={formData.personalInfo.fullName}
                   onChange={(e) => updateField('personalInfo', null, 'fullName', e.target.value)}
-                  className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="px-4 py-2 border border-slate-600 bg-slate-800 text-slate-200 placeholder-slate-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
                 <input
                   type="email"
@@ -347,14 +347,14 @@ const ResumeBuilder = () => {
                   value={formData.personalInfo.summary}
                   onChange={(e) => updateField('personalInfo', null, 'summary', e.target.value)}
                   rows="4"
-                  className="col-span-2 px-4 py-2 border rounded-lg resize-none focus:ring-2 focus:ring-blue-500"
+                  className="col-span-2 px-4 py-2 border border-slate-600 bg-slate-800 text-slate-200 placeholder-slate-500 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
             </div>
 
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+            <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Work Experience</h3>
+                <h3 className="text-lg font-semibold text-white">Work Experience</h3>
                 <button
                   onClick={() => addSection('experience')}
                   className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
@@ -365,11 +365,11 @@ const ResumeBuilder = () => {
               {formData.experience.map((exp, idx) => (
                 <div key={idx} className="bg-white rounded-lg p-4 mb-4 border">
                   <div className="flex justify-between items-center mb-3">
-                    <h4 className="font-medium text-gray-900">Experience #{idx + 1}</h4>
+                    <h4 className="font-medium text-slate-200">Experience #{idx + 1}</h4>
                     {formData.experience.length > 1 && (
                       <button
                         onClick={() => removeSection('experience', idx)}
-                        className="text-red-600 hover:text-red-800 text-sm"
+                        className="text-red-400 hover:text-red-300 text-sm"
                       >
                         Remove
                       </button>
@@ -435,9 +435,9 @@ const ResumeBuilder = () => {
               ))}
             </div>
 
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-6">
+            <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Education</h3>
+                <h3 className="text-lg font-semibold text-slate-200">Education</h3>
                 <button
                   onClick={() => addSection('education')}
                   className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
@@ -448,11 +448,11 @@ const ResumeBuilder = () => {
               {formData.education.map((edu, idx) => (
                 <div key={idx} className="bg-white rounded-lg p-4 mb-4 border">
                   <div className="flex justify-between items-center mb-3">
-                    <h4 className="font-medium text-gray-900">Education #{idx + 1}</h4>
+                    <h4 className="font-medium text-slate-200">Education #{idx + 1}</h4>
                     {formData.education.length > 1 && (
                       <button
                         onClick={() => removeSection('education', idx)}
-                        className="text-red-600 hover:text-red-800 text-sm"
+                        className="text-red-400 hover:text-red-300 text-sm"
                       >
                         Remove
                       </button>
@@ -506,8 +506,8 @@ const ResumeBuilder = () => {
               ))}
             </div>
 
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Skills</h3>
+            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-white mb-4">Skills</h3>
               <div className="space-y-3">
                 <textarea
                   placeholder="Technical Skills (e.g., Python, JavaScript, SQL, Machine Learning)"
@@ -540,9 +540,9 @@ const ResumeBuilder = () => {
               </div>
             </div>
 
-            <div className="bg-pink-50 border border-pink-200 rounded-lg p-6">
+            <div className="bg-pink-500/10 border border-pink-500/30 rounded-lg p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Projects</h3>
+                <h3 className="text-lg font-semibold text-white">Projects</h3>
                 <button
                   onClick={() => addSection('projects')}
                   className="px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700"
@@ -553,11 +553,11 @@ const ResumeBuilder = () => {
               {formData.projects.map((proj, idx) => (
                 <div key={idx} className="bg-white rounded-lg p-4 mb-4 border">
                   <div className="flex justify-between items-center mb-3">
-                    <h4 className="font-medium text-gray-900">Project #{idx + 1}</h4>
+                    <h4 className="font-medium text-slate-200">Project #{idx + 1}</h4>
                     {formData.projects.length > 1 && (
                       <button
                         onClick={() => removeSection('projects', idx)}
-                        className="text-red-600 hover:text-red-800 text-sm"
+                        className="text-red-400 hover:text-red-300 text-sm"
                       >
                         Remove
                       </button>
@@ -597,9 +597,9 @@ const ResumeBuilder = () => {
               ))}
             </div>
 
-            <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-6">
+            <div className="bg-indigo-500/10 border border-indigo-500/30 rounded-lg p-6 mb-8">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Certifications</h3>
+                <h3 className="text-lg font-semibold text-white">Certifications</h3>
                 <button
                   onClick={() => addSection('certifications')}
                   className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
@@ -610,11 +610,11 @@ const ResumeBuilder = () => {
               {formData.certifications.map((cert, idx) => (
                 <div key={idx} className="bg-white rounded-lg p-4 mb-4 border">
                   <div className="flex justify-between items-center mb-3">
-                    <h4 className="font-medium text-gray-900">Certification #{idx + 1}</h4>
+                    <h4 className="font-medium text-slate-200">Certification #{idx + 1}</h4>
                     {formData.certifications.length > 1 && (
                       <button
                         onClick={() => removeSection('certifications', idx)}
-                        className="text-red-600 hover:text-red-800 text-sm"
+                        className="text-red-400 hover:text-red-300 text-sm"
                       >
                         Remove
                       </button>
